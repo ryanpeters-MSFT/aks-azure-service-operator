@@ -12,14 +12,14 @@ $tenant = $account.tenantId
 # create resource group
 az group create -n $group -l eastus2
 
-# # create a cluster
+# create a cluster
 az aks create -n $cluster -g $group `
     -c 1 `
     --tier standard `
     --enable-oidc-issuer `
     --enable-workload-identity
 
-# # authenticate to the cluster
+# authenticate to the cluster
 az aks get-credentials -n $cluster -g $group --overwrite-existing
 
 # get OIDC issuer
@@ -32,7 +32,7 @@ $clientId = az identity create -n $azureManagedIdentity -g $group --query client
 az role assignment create `
     --role Contributor `
     --assignee $clientId `
-    --scope /subscriptions/$subscription/
+    --scope /subscriptions/$subscription
 
 # create the federated identity
 az identity federated-credential create `
