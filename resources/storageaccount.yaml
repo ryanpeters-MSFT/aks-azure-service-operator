@@ -1,7 +1,7 @@
 apiVersion: storage.azure.com/v1api20230101
 kind: StorageAccount
 metadata:
-  name: samplestorage
+  name: samplestorage08192025
   namespace: default
 spec:
   location: eastus2
