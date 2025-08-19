@@ -1,12 +1,11 @@
 $group = "rg-aks-aso"
 $cluster = "asocluster"
 $federatedName = "aso-federated-credential" # id used for federated credential
-$azureManagedIdentity = "ryan-workload" # workload managed identity in Azure
+$azureManagedIdentity = "asouser" # workload managed identity in Azure
 $namespace = "azureserviceoperator-system" # kubernetes namespace of the service account
 $serviceAccountName = "azureserviceoperator-default" # kubernetes service account name
 
 $account = az account show | ConvertFrom-Json
-
 $subscription = $account.id
 $tenant = $account.tenantId
 
@@ -16,6 +15,7 @@ az group create -n $group -l eastus2
 # # create a cluster
 az aks create -n $cluster -g $group `
     -c 1 `
+    --tier standard `
     --enable-oidc-issuer `
     --enable-workload-identity
 
@@ -50,17 +50,10 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 Start-Sleep -Seconds 30  
 kubectl wait --for=condition=Available deployment --all -n cert-manager --timeout=300s
 
-
-# $principal = az ad sp create-for-rbac `
-#     -n azure-service-operator `
-#     --role contributor `
-#     --scopes /subscriptions/$subscription | ConvertFrom-Json
-
-# $clientId = $principal.appId
-# $secret = $principal.password
-
+# add the ASO helm repo
 helm repo add aso2 https://raw.githubusercontent.com/Azure/azure-service-operator/main/v2/charts
 
+# install ASO, configured with WLI
 helm upgrade --install aso2 aso2/azure-service-operator `
     --create-namespace `
     --namespace=$namespace `
