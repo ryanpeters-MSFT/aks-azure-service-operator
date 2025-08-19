@@ -6,6 +6,8 @@ The key benefits of ASO include streamlined workflows by unifying application an
 
 ## Quickstart
 
+> **NOTE: This example deploys ALL CRDs possible for provisioning Azure resources, and this amount of CRDs can overwhelm the Free AKS tier. As a result, a Standard tier AKS cluster is deployed for this example.**
+
 Invoke [setup.ps1](./setup.ps1) to create the resource group, AKS cluster (with Workload Identity enabled), install `cert-manager` and the ASO operator through Helm. 
 
 ```powershell
