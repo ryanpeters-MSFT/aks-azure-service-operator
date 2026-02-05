@@ -24,8 +24,11 @@ kubectl apply -f .\resources\resourcegroup.yaml
 # create a basic storage account
 kubectl apply -f .\resources\storageaccount.yaml
 
-# create a vnet
+# create a vnet and 2 subnets (default and aks)
 kubectl apply -f .\resources\virtualnetwork.yaml
+
+# create a managed cluster attached to vnet/subnet
+kubectl apply -f .\resources\cluster.yaml
 ```
 
 ## Links
